@@ -7,7 +7,7 @@ export class Particle {
   color: string;
   vx = 0;
   vy = 0;
-  size = 10;
+  size = 5;
   constructor(x: number, y: number, c: string, ctx: CanvasRenderingContext2D) {
     this.x = x;
     this.y = y;
@@ -33,18 +33,23 @@ export class Life {
   height = 500;
 
   particles: Particle[] = [];
+  groups: Record<string, Particle[]> = {};
 
   constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     this.canvas = canvas;
     canvas.width = this.width;
     canvas.height = this.height;
     this.ctx = ctx;
-
-    this.create(100, 'red');
+    this.init();
     this.update();
   }
 
   random = () => Math.random() * (this.width - 100) + 50;
+
+  init = () => {
+    this.groups['yellow'] = this.create(200, 'yellow');
+    this.groups['purple'] = this.create(200, 'purple');
+  };
 
   create = (amount: number, color: string) => {
     const group: Particle[] = [];
@@ -78,7 +83,6 @@ export class Life {
   };
 
   terminate() {
-    // terminate instance
     this.isTerminated = true;
   }
 }
