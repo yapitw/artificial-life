@@ -5,11 +5,11 @@ export const LifeContainer = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    if (canvasRef.current) {
-      const life = new Life(canvasRef.current);
+    const ctx = canvasRef.current?.getContext('2d');
+    if (canvasRef.current && ctx) {
+      const life = new Life(canvasRef.current, ctx);
+      return () => life.terminate();
     }
-
-    return () => life.terminalte();
   }, []);
 
   return <canvas ref={canvasRef} />;
