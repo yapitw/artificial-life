@@ -13,6 +13,17 @@ export class Particle {
     this.ctx = ctx;
   }
 
+  update = () => {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x <= 0 || this.x >= 500) {
+      this.vx *= -1;
+    }
+    if (this.y <= 0 || this.y >= 500) {
+      this.vy *= -1;
+    }
+  };
+
   draw = () => {
     this.ctx.save();
     this.ctx.fillStyle = this.color;
