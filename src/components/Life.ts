@@ -23,7 +23,7 @@ export class Life {
   random = () => Math.random() * (this.width - 100) + 50;
 
   init = () => {
-    this.groups.g1 = this.create(500, '#ffffff22');
+    this.groups.g1 = this.create(500, '#ffffff55');
     this.groups.g2 = this.create(1000, '#ff229977');
     this.groups.g3 = this.create(1000, '#ee22ff88');
   };
