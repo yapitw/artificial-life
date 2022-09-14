@@ -5,7 +5,7 @@ export class Particle {
   color: string;
   vx = 0;
   vy = 0;
-  size = 2;
+  size = 2.5;
   constructor(x: number, y: number, c: string, ctx: CanvasRenderingContext2D) {
     this.x = x;
     this.y = y;
