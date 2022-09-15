@@ -21,24 +21,25 @@ export class Life {
   }
 
   resize = () => {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
+    this.width = this.canvas.width = window.innerWidth;
+    this.height = this.canvas.height = window.innerHeight;
+
   };
 
-  random = () => Math.random() * this.width;
+
 
   init = () => {
     this.groups.g1 = this.create(500, '#ffffff88');
     this.groups.g2 = this.create(1000, '#ff2299');
-    this.groups.g3 = this.create(1000, '#ee22ff11');
+    this.groups.g3 = this.create(1000, '#3322ff');
   };
 
   create = (amount: number, color: string) => {
     const group: Particle[] = [];
     for (let i = 0; i < amount; i++) {
       const particle = new Particle(
-        this.random(),
-        this.random(),
+        Math.random() * this.width,
+        Math.random() * this.height,
         color,
         this.ctx
       );
@@ -71,6 +72,7 @@ export class Life {
       p1.vx = (p1.vx + fx) * 0.5;
       p1.vy = (p1.vy + fy) * 0.5;
       p1.update({ width: this.width, height: this.height });
+
     }
   };
 
@@ -89,6 +91,7 @@ export class Life {
     this.drawBackground('black');
 
     for (const particle of this.particles) {
+      // particle.update({ width: this.width, height: this.height });
       particle.draw();
     }
 
