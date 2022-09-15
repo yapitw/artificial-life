@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import { LifeContainer } from './components/LifeContainer';
+import { LifeContainer } from './LifeContainer';
 
 function App() {
   return (
