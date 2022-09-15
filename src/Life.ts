@@ -5,8 +5,8 @@ export class Life {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   isTerminated = false;
-  width = 500;
-  height = 500;
+  width = window.innerWidth;
+  height = window.innerHeight;
 
   particles: Particle[] = [];
   groups: Record<string, Particle[]> = {};
@@ -20,7 +20,12 @@ export class Life {
     this.update();
   }
 
-  random = () => Math.random() * (this.width - 100) + 50;
+  resize = () => {
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+  };
+
+  random = () => Math.random() * this.width;
 
   init = () => {
     this.groups.g1 = this.create(500, '#ffffff88');
@@ -65,7 +70,7 @@ export class Life {
       }
       p1.vx = (p1.vx + fx) * 0.5;
       p1.vy = (p1.vy + fy) * 0.5;
-      p1.update();
+      p1.update({ width: this.width, height: this.height });
     }
   };
 

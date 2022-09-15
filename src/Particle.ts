@@ -13,13 +13,13 @@ export class Particle {
     this.ctx = ctx;
   }
 
-  update = () => {
+  update = (bound: { width: number; height: number }) => {
     this.x += this.vx;
     this.y += this.vy;
-    if (this.x <= 0 || this.x >= 500) {
+    if (this.x <= 0 || this.x >= bound.width) {
       this.vx *= -1;
     }
-    if (this.y <= 0 || this.y >= 500) {
+    if (this.y <= 0 || this.y >= bound.height) {
       this.vy *= -1;
     }
   };
