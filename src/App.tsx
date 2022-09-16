@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import './App.css';
-import { LifeContainer } from './LifeContainer';
+import "./App.css";
+import { Description } from "./Description";
+import { LifeContainer } from "./LifeContainer";
 
 function App() {
   return (
     <div className="App">
       <LifeContainer />
+      <Description />
     </div>
   );
 }
