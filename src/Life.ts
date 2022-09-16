@@ -1,4 +1,5 @@
 // Life is amazing
+import { getKernel } from './GPU';
 import { Particle } from './Particle';
 
 export class Life {
@@ -29,9 +30,9 @@ export class Life {
 
 
   init = () => {
-    this.groups.g1 = this.create(500, '#ffffff88');
-    this.groups.g2 = this.create(1000, '#ff2299');
-    this.groups.g3 = this.create(1000, '#3322ff');
+    this.groups.g1 = this.create(2000, '#ffffff7f');
+    this.groups.g2 = this.create(2000, '#ff00bbab');
+    this.groups.g3 = this.create(2000, '#22ff909a');
   };
 
   create = (amount: number, color: string) => {
@@ -55,40 +56,42 @@ export class Life {
   };
 
   rule = (group1: Particle[], group2: Particle[], force: number) => {
-    for (const p1 of group1) {
-      let fx = 0;
-      let fy = 0;
-      for (const p2 of group2) {
-        const dx = p1.x - p2.x;
-        const dy = p1.y - p2.y;
-        const d = Math.sqrt(dx * dx + dy * dy);
+    const mapPropsToArray = (p: Particle) => ([p.x, p.y, p.vx, p.vy])
 
-        if (d > 0 && d < 80) {
-          const F = (force * 1) / d;
-          fx += F * dx;
-          fy += F * dy;
-        }
-      }
-      p1.vx = (p1.vx + fx) * 0.5;
-      p1.vy = (p1.vy + fy) * 0.5;
-      p1.update({ width: this.width, height: this.height });
+    const g1Array = group1.map(mapPropsToArray)
+    const g2Array = group2.map(mapPropsToArray)
 
-    }
+    const calculateForces = getKernel(group1.length, group2.length, force)
+
+    const result = calculateForces(g1Array, g2Array) as [number, number, number, number][]
+
+    group1.forEach((particle, index) => {
+      const [x, y, vx, vy] = result[index]
+      particle.vx = particle.vx * 0.5 + vx * 0.5
+      particle.vy = particle.vy * 0.5 + vy * 0.5
+      particle.update({ width: this.width, height: this.height });
+    })
   };
 
   update = () => {
     if (this.isTerminated) return;
     const { rule } = this;
     const { g1, g2, g3 } = this.groups;
-    rule(g2, g2, -0.32);
-    rule(g2, g3, -0.17);
-    rule(g2, g1, 0.34);
-    rule(g3, g3, -0.1);
-    rule(g3, g2, -0.34);
+
     rule(g1, g1, 0.15);
     rule(g1, g2, -0.2);
+    rule(g1, g3, -0.01);
 
-    this.drawBackground('black');
+    rule(g2, g1, 0.34);
+    rule(g2, g2, -0.32);
+    rule(g2, g3, -0.17);
+
+    rule(g3, g1, -0.01);
+    rule(g3, g2, -0.34);
+    rule(g3, g3, -0.1);
+
+
+    this.drawBackground('#000000');
 
     for (const particle of this.particles) {
       // particle.update({ width: this.width, height: this.height });
